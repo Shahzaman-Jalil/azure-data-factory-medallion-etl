@@ -3,11 +3,11 @@
 ![Azure Data Factory](https://img.shields.io/badge/Azure-Data%20Factory-0078D4?logo=microsoftazure&logoColor=white)
 ![Architecture](https://img.shields.io/badge/Architecture-Medallion%20(Bronze--Silver--Gold)-4B8BBE)
 ![Integration Runtime](https://img.shields.io/badge/Runtime-Self--Hosted-6A1B9A)
-![Status](https://img.shields.io/badge/Project-ARM%20Exported%20ADF-success)
+![Status](https://img.shields.io/badge/Project-ADF%20Git%20Integrated-success)
 
 ## Overview
 
-This project is an **Azure Data Factory (ADF) ARM-exported ETL solution** implementing a **Medallion Architecture** for airline/retail-style booking analytics.  
+This project is an **Azure Data Factory (ADF) Git-integrated ETL solution** (resource JSON artifacts by folder) implementing a **Medallion Architecture** for airline/retail-style booking analytics.  
 It orchestrates ingestion from API, on-prem, and SQL sources into a lake-first layered model, then applies transformation and serving logic using ADF pipelines and Mapping Data Flows.
 
 ---
@@ -93,7 +93,7 @@ This reflects an incremental build approach — sources and architecture are des
 - **Azure Data Lake / Storage-linked datasets**
 - **Azure SQL (linked service + SQL datasets)**
 - **Self-Hosted Integration Runtime** (`Zaman-SelfHosted`) for on-prem connectivity
-- **GitHub-integrated ADF artifacts** (ARM-exported JSON project structure)
+- **GitHub-integrated ADF artifacts** (ADF Git-mode JSON resource structure: pipeline/, dataset/, dataflow/, linkedService/, integrationRuntime/, trigger/, factory/)
 
 ---
 
@@ -142,7 +142,7 @@ To deploy and run this project in your environment:
    - Ensure `Zaman-SelfHosted` equivalent runtime is available in your ADF instance.
 
 6. **Linked Service Parameterization / Secrets**
-   - Update connection strings, server names, credentials, and key vault references (if used) before execution.
+   - Update connection strings, server names, and credentials before execution. (No Azure Key Vault reference artifacts are currently present in this repository.)
 
 7. **Publish & Trigger**
    - Validate pipelines/data flows, publish changes, then enable `Ingesttrigger`.
