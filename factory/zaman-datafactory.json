@@ -1,0 +1,15 @@
+{
+	"name": "zaman-datafactory",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "southeastasia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "6d2cd2c1-8207-4418-88fa-fd2ef792ee30",
+		"tenantId": "75df096c-8b72-48e4-9b91-cbf79d87ee3a"
+	}
+}

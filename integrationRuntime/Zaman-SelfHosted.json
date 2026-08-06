@@ -1,0 +1,6 @@
+{
+	"name": "Zaman-SelfHosted",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
