@@ -54,6 +54,30 @@ The solution follows a layered pipeline design:
 | `SilverLayer` | Executes silver-stage transformation logic (curation/standardization). |
 | `GoldLayer` | Executes gold-stage serving logic for analytical consumption. |
 
+**Parent pipeline — Master Orchestrator**
+
+![Parent Pipeline](./screenshots/parent-pipeline.png)
+
+**API_Ingestion**
+
+![API Ingestion](./screenshots/api-ingestion.png)
+
+**onprem_ingestion**
+
+![Onprem Ingestion](./screenshots/onprem-ingestion.png)
+
+**SQLToDatalake**
+
+![SQL To Datalake](./screenshots/sql-to-datalake.png)
+
+**SilverLayer**
+
+![Silver Layer](./screenshots/silver-layer.png)
+
+**GoldLayer**
+
+![Gold Layer](./screenshots/gold-layer.png)
+
 ### 2) Mapping Data Flows
 
 | Data Flow | Purpose |
@@ -61,11 +85,48 @@ The solution follows a layered pipeline design:
 | `DataTransformation` | Main transformation flow for shaping curated entities and preparing analytical model inputs. |
 | `DataServing` | Final serving flow for producing gold-level consumable datasets/tables. |
 
+**DataTransformation — Data Flow Canvas**
+
+![Data Transformation Flow](./screenshots/data-transformation-flow.png)
+
+**DataServing — Data Flow Canvas**
+
+![Data Serving Flow](./screenshots/data-serving-flow.png)
+
+**DataServing — Window Transformation (Dense Rank) Settings**
+
+![Dense Rank Window Settings](./screenshots/dense-rank-window-settings.png)
+
+**DataServing — Data Preview (Ranked Output)**
+
+![Data Preview Ranked Output](./screenshots/data-preview-ranked-output.png)
+
 ### 3) Trigger
 
 | Trigger | Purpose |
 |---|---|
 | `Ingesttrigger` | Scheduled/event trigger to initiate ingestion/orchestration pipeline runs. |
+
+**Ingesttrigger — Schedule Configuration**
+
+![Ingest Trigger](./screenshots/ingest-trigger.png)
+
+---
+
+## Alerting (Email Notification via Logic App)
+
+The Parent pipeline includes a **Web Activity** integrated with an **Azure Logic App**, which sends an automated email notification (via Gmail) once the pipeline run completes.
+
+**How it works:**
+- The Logic App is triggered via an **HTTP Request trigger** ("When an HTTP request is received")
+- The Parent pipeline's Web Activity sends a **POST** request to the Logic App's HTTP endpoint, with a JSON body containing pipeline metadata (pipeline name, run ID, status, error message)
+- The Logic App then executes a **Send Email (V2)** action, delivering the details directly to an inbox
+
+> **Note:** This Web Activity is currently connected on the **On Success** path (for testing/demo purposes), so it sends a run-completion email rather than a failure-only alert. In a production setup, this would be moved to the **On Failure** path to alert specifically on pipeline failures.
+
+**Logic App Flow — HTTP Trigger → Send Email**
+
+![Logic App Flow](./screenshots/logic-app-flow.png)
 
 ---
 
@@ -93,6 +154,7 @@ This reflects an incremental build approach — sources and architecture are des
 - **Azure Data Lake / Storage-linked datasets**
 - **Azure SQL (linked service + SQL datasets)**
 - **Self-Hosted Integration Runtime** (`Zaman-SelfHosted`) for on-prem connectivity
+- **Azure Logic Apps** (automated email notification via Web Activity)
 - **GitHub-integrated ADF artifacts** (ADF Git-mode JSON resource structure: pipeline/, dataset/, dataflow/, linkedService/, integrationRuntime/, trigger/, factory/)
 
 ---
@@ -160,6 +222,7 @@ To deploy and run this project in your environment:
 ├── linkedService/         # External system connections (SQL, Data Lake, GitHub, on-prem)
 ├── pipeline/              # Orchestration and ETL pipelines (Bronze/Silver/Gold + parent)
 ├── trigger/               # Trigger definitions (Ingesttrigger)
+├── screenshots/           # ADF Studio canvas screenshots (pipelines, data flows, Logic App)
 ├── publish_config.json    # Publish configuration metadata
 └── README.md              # Project documentation
 ```
@@ -169,6 +232,7 @@ To deploy and run this project in your environment:
 ## Future Enhancements
 
 - Complete gold-layer transformations and business views for **`dim_flight`**, **`dim_passenger`**, and **`dim_airport`** (source datasets already in place)
+- Switch the Logic App Web Activity from **On Success** to **On Failure** path for true failure-only alerting
 - Add **CI/CD release pipeline** (ARM/Bicep + environment promotion strategy)
 - Introduce **parameterized environment configs** (dev/test/prod)
 - Add **data quality checks** and quarantine flow for bad records
