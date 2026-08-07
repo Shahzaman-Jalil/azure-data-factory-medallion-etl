@@ -56,28 +56,27 @@ The solution follows a layered pipeline design:
 
 **Parent pipeline — Master Orchestrator**
 
-![Parent Pipeline](./screenshots/parent-pipeline.png)
+![Parent Pipeline](https://github.com/user-attachments/assets/a6faf597-3f26-4ca9-8bcf-2019e09f07e3)
 
 **API_Ingestion**
 
-![API Ingestion](<img width="940" height="261" alt="api_ingestion" src="https://github.com/user-attachments/assets/e7ea4442-85e7-4c87-8359-6515d7e8c8c4" />
-)
+![API Ingestion](https://github.com/user-attachments/assets/e7ea4442-85e7-4c87-8359-6515d7e8c8c4)
 
 **onprem_ingestion**
 
-![Onprem Ingestion](./screenshots/onprem-ingestion.png)
+![Onprem Ingestion](https://github.com/user-attachments/assets/1dfb7c5a-11a4-40e3-a833-8830dcd43158)
 
 **SQLToDatalake**
 
-![SQL To Datalake](./screenshots/sql-to-datalake.png)
+![SQL To Datalake](https://github.com/user-attachments/assets/f07714cf-6b13-4951-900e-06fe93857d60)
 
 **SilverLayer**
 
-![Silver Layer](./screenshots/silver-layer.png)
+![Silver Layer](https://github.com/user-attachments/assets/86b64e49-ab1d-4413-8dcc-9c43f6586534)
 
 **GoldLayer**
 
-![Gold Layer](./screenshots/gold-layer.png)
+![Gold Layer](https://github.com/user-attachments/assets/46c125be-f0a8-4fe7-a2b9-f07e57818c4b)
 
 ### 2) Mapping Data Flows
 
@@ -88,29 +87,11 @@ The solution follows a layered pipeline design:
 
 **DataTransformation — Data Flow Canvas**
 
-![Data Transformation Flow](./screenshots/data-transformation-flow.png)
+![Data Transformation Flow](https://github.com/user-attachments/assets/104da712-a381-4a98-bc77-33364bfd31c3)
 
 **DataServing — Data Flow Canvas**
 
-![Data Serving Flow](./screenshots/data-serving-flow.png)
-
-**DataServing — Window Transformation (Dense Rank) Settings**
-
-![Dense Rank Window Settings](./screenshots/dense-rank-window-settings.png)
-
-**DataServing — Data Preview (Ranked Output)**
-
-![Data Preview Ranked Output](./screenshots/data-preview-ranked-output.png)
-
-### 3) Trigger
-
-| Trigger | Purpose |
-|---|---|
-| `Ingesttrigger` | Scheduled/event trigger to initiate ingestion/orchestration pipeline runs. |
-
-**Ingesttrigger — Schedule Configuration**
-
-![Ingest Trigger](./screenshots/ingest-trigger.png)
+![Data Serving Flow](https://github.com/user-attachments/assets/3c30e35f-37ec-4276-8c68-247e52b53b58)
 
 ---
 
@@ -127,7 +108,7 @@ The Parent pipeline includes a **Web Activity** integrated with an **Azure Logic
 
 **Logic App Flow — HTTP Trigger → Send Email**
 
-![Logic App Flow](./screenshots/logic-app-flow.png)
+![Logic App Flow](https://github.com/user-attachments/assets/2dd81524-3350-42ac-8ef2-f28c162f1ca3)
 
 ---
 
