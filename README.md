@@ -56,11 +56,11 @@ The solution follows a layered pipeline design:
 
 **Parent pipeline — Master Orchestrator**
 
-![API Ingestion](screenshots/api_ingestion.PNG)
+![Parent Pipeline](./screenshots/parent-pipeline.png)
 
 **API_Ingestion**
 
-![API Ingestion](./screenshots/api-ingestion.png)
+![API Ingestion](./screenshots/api_ingestion.PNG)
 
 **onprem_ingestion**
 
