@@ -60,7 +60,7 @@ The solution follows a layered pipeline design:
 
 **API_Ingestion**
 
-![API Ingestion](./screenshots/api_ingestion.PNG)
+![API Ingestion](D:\screenshots\api_ingestion.PNG)
 
 **onprem_ingestion**
 
