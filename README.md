@@ -56,7 +56,7 @@ The solution follows a layered pipeline design:
 
 **Parent pipeline — Master Orchestrator**
 
-![Parent Pipeline](./screenshots/parent-pipeline.png)
+![API Ingestion](screenshots/api_ingestion.PNG)
 
 **API_Ingestion**
 
