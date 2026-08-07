@@ -60,7 +60,8 @@ The solution follows a layered pipeline design:
 
 **API_Ingestion**
 
-![API Ingestion](D:\screenshots\api_ingestion.PNG)
+![API Ingestion](<img width="940" height="261" alt="api_ingestion" src="https://github.com/user-attachments/assets/38d31730-363b-4f9a-91c9-45c6898d7e53" />
+)
 
 **onprem_ingestion**
 
