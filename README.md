@@ -50,7 +50,7 @@ The solution follows a layered pipeline design:
 | `Parent pipeline` | Master orchestration pipeline coordinating end-to-end ETL flow across layers. |
 | `API_Ingestion` | Ingests API source data into configured sink datasets (raw landing pattern). |
 | `onprem_ingestion` | Ingests on-prem file data using **Self-Hosted Integration Runtime** and parameterized datasets. |
-| `SQLToDatalake` | Moves relational SQL source data into Data Lake landing/bronze-style storage. |
+| `SQLToDatalake` | Moves relational SQL source data into Data Lake using a **watermark-based incremental load pattern**. |
 | `SilverLayer` | Executes silver-stage transformation logic (curation/standardization). |
 | `GoldLayer` | Executes gold-stage serving logic for analytical consumption. |
 
@@ -92,6 +92,29 @@ The solution follows a layered pipeline design:
 **DataServing — Data Flow Canvas**
 
 ![Data Serving Flow](https://github.com/user-attachments/assets/3c30e35f-37ec-4276-8c68-247e52b53b58)
+
+### 3) Trigger
+
+| Trigger | Purpose |
+|---|---|
+| `Ingesttrigger` | Scheduled/event trigger to initiate ingestion/orchestration pipeline runs. |
+
+---
+
+## Incremental Loading (Watermark Strategy)
+
+The `SQLToDatalake` pipeline implements a **watermark-based incremental load pattern** to avoid reprocessing the entire source table on every run:
+
+- **Lookup (LatestLoad)** — retrieves the last watermark value (most recent loaded timestamp/ID) from a control/reference table
+- **Lookup (FirstLoad)** — retrieves the current maximum value from the source table
+- **Copy Data** — pulls only the rows between the last watermark and the current maximum, instead of a full table scan
+- **Watermark (Stored Procedure/Update Activity)** — updates the watermark value after a successful load, so the next run picks up only new/changed data
+
+This pattern significantly reduces load time and cost on large source tables and follows standard ADF incremental-load design (in contrast to full-refresh loading used in `API_Ingestion` and `onprem_ingestion`).
+
+**SQLToDatalake — Watermark-Based Incremental Load**
+
+![SQL To Datalake Watermark](https://github.com/user-attachments/assets/f07714cf-6b13-4951-900e-06fe93857d60)
 
 ---
 
@@ -136,6 +159,7 @@ This reflects an incremental build approach — sources and architecture are des
 - **Azure Data Lake / Storage-linked datasets**
 - **Azure SQL (linked service + SQL datasets)**
 - **Self-Hosted Integration Runtime** (`Zaman-SelfHosted`) for on-prem connectivity
+- **Watermark-based incremental loading** (SQLToDatalake pipeline)
 - **Azure Logic Apps** (automated email notification via Web Activity)
 - **GitHub-integrated ADF artifacts** (ADF Git-mode JSON resource structure: pipeline/, dataset/, dataflow/, linkedService/, integrationRuntime/, trigger/, factory/)
 
@@ -204,7 +228,6 @@ To deploy and run this project in your environment:
 ├── linkedService/         # External system connections (SQL, Data Lake, GitHub, on-prem)
 ├── pipeline/              # Orchestration and ETL pipelines (Bronze/Silver/Gold + parent)
 ├── trigger/               # Trigger definitions (Ingesttrigger)
-├── screenshots/           # ADF Studio canvas screenshots (pipelines, data flows, Logic App)
 ├── publish_config.json    # Publish configuration metadata
 └── README.md              # Project documentation
 ```
@@ -215,10 +238,10 @@ To deploy and run this project in your environment:
 
 - Complete gold-layer transformations and business views for **`dim_flight`**, **`dim_passenger`**, and **`dim_airport`** (source datasets already in place)
 - Switch the Logic App Web Activity from **On Success** to **On Failure** path for true failure-only alerting
+- Extend the watermark strategy to `API_Ingestion` and `onprem_ingestion` (currently full-refresh)
 - Add **CI/CD release pipeline** (ARM/Bicep + environment promotion strategy)
 - Introduce **parameterized environment configs** (dev/test/prod)
 - Add **data quality checks** and quarantine flow for bad records
-- Implement **incremental load / watermark strategy** for large fact tables
 - Add **monitoring dashboards and alerting** (pipeline failure SLA visibility)
 - Extend gold layer with additional business marts and KPI aggregates
 
